@@ -1,0 +1,11 @@
+# Root-level ignores
+.DS_Store
+*.docx
+seed-auth-users.js
+seed-demo-users.js
+run-schema-now.sql
+/design/
+/_archive/
+# seed scripts excluded — contain credentials
+app/seed-all-roles.js
+app/seed-demo-users.js

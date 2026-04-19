@@ -1,0 +1,150 @@
+/* LC Platform — design tokens
+   Crisp + institutional. Light-only for now.
+   Mirrors the tokens from the design handoff (styles/tokens.css). */
+
+:root {
+  /* Primary — navy (chosen accent) */
+  --primary: #1f3a68;
+  --primary-hover: #172d52;
+  --primary-foreground: #ffffff;
+
+  /* Secondary / accent */
+  --secondary: #eef2f7;
+  --secondary-foreground: #1f2937;
+  --accent: #e8eef7;
+  --accent-foreground: #1f3a68;
+
+  /* Status */
+  --destructive: #b42318;
+  --destructive-hover: #912013;
+  --destructive-foreground: #ffffff;
+  --destructive-soft: #fef3f2;
+  --destructive-soft-foreground: #912013;
+
+  --success: #067647;
+  --success-soft: #ecfdf3;
+  --success-soft-foreground: #067647;
+
+  --warning: #b54708;
+  --warning-soft: #fff8ed;
+  --warning-soft-foreground: #b54708;
+
+  --info: #175cd3;
+  --info-soft: #eff6ff;
+  --info-soft-foreground: #175cd3;
+
+  /* Neutrals */
+  --background: #fafafa;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --muted: #f3f4f6;
+  --muted-foreground: #64748b;
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --ring: #1f3a68;
+  --subtle: #f7f8fa;
+
+  /* Role tints */
+  --role-super-admin: #6b4fbb;
+  --role-lc-admin:    #1f3a68;
+  --role-teacher:     #0f766e;
+  --role-student:     #b54708;
+
+  /* Typography */
+  --font-sans: 'Inter Tight', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Spacing scale */
+  --space-micro: 4px;
+  --space-tight: 8px;
+  --space-default: 12px;
+  --space-loose: 20px;
+  --space-section: 32px;
+  --space-page: 24px;
+
+  /* Radius */
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-full: 999px;
+
+  /* Elevation */
+  --elev-sm: 0 1px 2px rgba(15,23,42,0.06);
+  --elev-md: 0 4px 10px -2px rgba(15,23,42,0.08), 0 2px 4px -2px rgba(15,23,42,0.04);
+  --elev-lg: 0 16px 32px -8px rgba(15,23,42,0.16), 0 6px 12px -4px rgba(15,23,42,0.06);
+  --elev-xl: 0 24px 48px -12px rgba(15,23,42,0.22);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-default: 200ms;
+  --motion-slow: 320ms;
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Type scale */
+  --fs-display: 40px;
+  --fs-h1: 24px;
+  --fs-h2: 18px;
+  --fs-h3: 15px;
+  --fs-h4: 13px;
+  --fs-body: 14px;
+  --fs-small: 12px;
+  --fs-micro: 11px;
+  --lh-tight: 1.2;
+  --lh-normal: 1.45;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--foreground);
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+button { font-family: inherit; }
+input, textarea, select { font-family: inherit; font-size: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scrollbars */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: #d9dde3; border-radius: 10px; border: 2px solid transparent; background-clip: content-box; }
+*::-webkit-scrollbar-thumb:hover { background: #c0c6ce; border: 2px solid transparent; background-clip: content-box; }
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
+@keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes slideInBottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeBg { from { background: rgba(15,23,42,0); } to { background: rgba(15,23,42,0.32); } }
+@keyframes pulse { 0% { opacity: 0.55; } 50% { opacity: 0.95; } 100% { opacity: 0.55; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Helpers */
+.hover-row { transition: background var(--motion-fast) var(--ease); }
+.hover-row:hover { background: var(--subtle); }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 10px;
+  font-size: 13px; color: var(--muted-foreground);
+  border-radius: var(--radius-md); cursor: pointer;
+  transition: background var(--motion-fast) var(--ease), color var(--motion-fast) var(--ease);
+  user-select: none;
+}
+.nav-item:hover { background: var(--muted); color: var(--foreground); }
+.nav-item.active { background: var(--accent); color: var(--accent-foreground); font-weight: 500; }
+.tw-label { font-size: 11px; color: var(--muted-foreground); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.sep { height: 1px; background: var(--border); }
+
+.page-root { min-height: 100%; background: var(--background); }
