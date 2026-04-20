@@ -1,5 +1,6 @@
 import { PageHeader } from '@/components/ui/page-header';
 import { listPeople } from '@/lib/data/people';
+import { getCurrentProfile } from '@/lib/data/profile';
 import { getServiceSupabase } from '@/lib/supabase/server';
 import type { UserRole, UserStatus } from '@/lib/supabase/types';
 
@@ -14,7 +15,8 @@ export default async function PeoplePage({
 }) {
   const role = (searchParams.role as UserRole | undefined) || undefined;
   const status = (searchParams.status as UserStatus | undefined) || undefined;
-  const [people, lcs] = await Promise.all([
+  const [me, people, lcs] = await Promise.all([
+    getCurrentProfile(),
     listPeople({ role, status, lcId: searchParams.lc || undefined, search: searchParams.q }),
     (async () => {
       const admin = getServiceSupabase();
@@ -29,6 +31,7 @@ export default async function PeoplePage({
         people={people}
         lcs={lcs}
         currentFilters={{ role, status, lc: searchParams.lc, q: searchParams.q }}
+        currentUserId={me.id}
       />
     </div>
   );

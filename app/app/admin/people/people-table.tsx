@@ -35,10 +35,12 @@ export function PeopleTable({
   people,
   lcs,
   currentFilters,
+  currentUserId,
 }: {
   people: PersonRow[];
   lcs: { id: string; name: string }[];
   currentFilters: { role?: string; status?: string; lc?: string; q?: string };
+  currentUserId: string;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -129,7 +131,7 @@ export function PeopleTable({
             </thead>
             <tbody>
               {people.map((p) => (
-                <PersonRow key={p.id} p={p} />
+                <PersonRow key={p.id} p={p} isCurrentUser={p.id === currentUserId} />
               ))}
             </tbody>
           </table>
@@ -171,7 +173,7 @@ function FilterSelect<V extends string>({
   );
 }
 
-function PersonRow({ p }: { p: PersonRow }) {
+function PersonRow({ p, isCurrentUser }: { p: PersonRow; isCurrentUser: boolean }) {
   const router = useRouter();
   const toast = useToast();
   const [isPending, startTransition] = useTransition();
@@ -213,7 +215,7 @@ function PersonRow({ p }: { p: PersonRow }) {
         <Badge variant={p.status} size="sm">{p.status}</Badge>
       </td>
       <td style={{ padding: '8px 14px', textAlign: 'right' }}>
-        {p.status === 'active' && (
+        {!isCurrentUser && p.status === 'active' && (
           <Button
             size="sm"
             variant="ghost"
@@ -223,7 +225,7 @@ function PersonRow({ p }: { p: PersonRow }) {
             Suspend
           </Button>
         )}
-        {p.status === 'suspended' && (
+        {!isCurrentUser && p.status === 'suspended' && (
           <Button
             size="sm"
             variant="ghost"
@@ -232,6 +234,9 @@ function PersonRow({ p }: { p: PersonRow }) {
           >
             Reactivate
           </Button>
+        )}
+        {isCurrentUser && (
+          <span style={{ fontSize: 11, color: 'var(--muted-foreground)', fontStyle: 'italic' }}>You</span>
         )}
       </td>
     </tr>

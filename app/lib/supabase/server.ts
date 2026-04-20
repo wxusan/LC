@@ -30,10 +30,10 @@ export function getServerSupabase(): SupabaseClient {
       getAll() {
         return store.getAll();
       },
-      setAll(cookiesToSet) {
+      setAll(cookiesToSet: { name: string; value: string; options: Record<string, unknown> }[]) {
         try {
           cookiesToSet.forEach(({ name, value, options }) =>
-            store.set(name, value, options),
+            store.set(name, value, options as Parameters<typeof store.set>[2]),
           );
         } catch {
           // Server Components can't write cookies — middleware handles refresh.

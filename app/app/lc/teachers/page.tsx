@@ -13,7 +13,7 @@ export default async function TeachersPage() {
   return (
     <div>
       <PageHeader title="Teachers" subtitle="Educators at your learning center." />
-      <LcPeopleList people={people} emptyHeading="No teachers yet" emptyIcon="graduation" />
+      <LcPeopleList people={people} emptyHeading="No teachers yet" emptyIcon="graduation" currentUserId={me.id} />
       <LcInviteFab />
     </div>
   );

@@ -54,6 +54,9 @@ export async function setProfileStatusAction(formData: FormData): Promise<Action
     .maybeSingle();
   if (!target) return fail('User not found');
 
+  // Nobody can change their own status — prevents self-lockout
+  if (target.id === me.id) return fail('You cannot change your own account status');
+
   if (me.role === 'super_admin') {
     // ok
   } else if (me.role === 'lc_admin') {

@@ -5,7 +5,7 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { updateSession } from '@/lib/supabase/middleware';
-import type { UserRole } from '@/lib/supabase/types';
+import type { UserRole, UserStatus } from '@/lib/supabase/types';
 
 const ROLE_HOME: Record<UserRole, string> = {
   super_admin: '/admin',
@@ -58,20 +58,20 @@ export async function middleware(request: NextRequest) {
     .select('role, status')
     .eq('id', user.id)
     .maybeSingle();
-  const profile = profileRaw as { role: UserRole; status: string } | null;
+  const profile = profileRaw as { role: UserRole; status: UserStatus } | null;
+
+  // If user has no profile row yet (shouldn't happen with invite flow)
+  if (!profile) {
+    return response;
+  }
 
   // Suspended / archived → force sign-out
-  if (profile?.status === 'suspended' || profile?.status === 'archived') {
+  if (profile.status === 'suspended' || profile.status === 'archived') {
     await supabase.auth.signOut();
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('error', 'account_suspended');
     return NextResponse.redirect(url);
-  }
-
-  // If user never completed profile creation (shouldn't happen with invite flow)
-  if (!profile) {
-    return response;
   }
 
   const home = ROLE_HOME[profile.role];

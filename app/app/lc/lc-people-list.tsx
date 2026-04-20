@@ -16,10 +16,12 @@ export function LcPeopleList({
   people,
   emptyHeading,
   emptyIcon,
+  currentUserId,
 }: {
   people: Profile[];
   emptyHeading: string;
   emptyIcon: IconName;
+  currentUserId: string;
 }) {
   if (people.length === 0) {
     return (
@@ -41,7 +43,7 @@ export function LcPeopleList({
         </thead>
         <tbody>
           {people.map((p) => (
-            <PersonRow key={p.id} p={p} />
+            <PersonRow key={p.id} p={p} isCurrentUser={p.id === currentUserId} />
           ))}
         </tbody>
       </table>
@@ -49,7 +51,7 @@ export function LcPeopleList({
   );
 }
 
-function PersonRow({ p }: { p: Profile }) {
+function PersonRow({ p, isCurrentUser }: { p: Profile; isCurrentUser: boolean }) {
   const router = useRouter();
   const toast = useToast();
   const [isPending, startTransition] = useTransition();
@@ -87,15 +89,18 @@ function PersonRow({ p }: { p: Profile }) {
         <Badge variant={p.status} size="sm">{p.status}</Badge>
       </td>
       <td style={{ padding: '8px 14px', textAlign: 'right' }}>
-        {p.status === 'active' && (
+        {!isCurrentUser && p.status === 'active' && (
           <Button size="sm" variant="ghost" loading={isPending} onClick={() => setStatus('suspended')}>
             Suspend
           </Button>
         )}
-        {p.status === 'suspended' && (
+        {!isCurrentUser && p.status === 'suspended' && (
           <Button size="sm" variant="ghost" loading={isPending} onClick={() => setStatus('active')}>
             Reactivate
           </Button>
+        )}
+        {isCurrentUser && (
+          <span style={{ fontSize: 11, color: 'var(--muted-foreground)', fontStyle: 'italic' }}>You</span>
         )}
       </td>
     </tr>
